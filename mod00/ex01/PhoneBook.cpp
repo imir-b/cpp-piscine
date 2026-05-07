@@ -17,6 +17,7 @@
 
 # include "PhoneBook.hpp"
 # include <iostream>
+# include <stdlib.h>
 
 class Contact {
     public:
@@ -26,50 +27,75 @@ class Contact {
 		std::string	nickname;
 		std::string	phone_number;
 		std::string	secret;
+
 		void	display()
 		{
-			std::cout 
+			std::cout << first_name << std::endl << last_name << std::endl << nickname << std::endl << phone_number << std::endl << secret << std::endl;
+		}
+
+		void	print_index()
+		{
+			std::cout << index << ' | ' << first_name << ' | ' << last_name << ' | ' << nickname << std::endl;
 		}
 };
 
 class PhoneBook {
 	public:
 		Contact	contacts[8];
+
 		void	print_phonebook()
 		{
 			if (!contacts)
 				return ;
-			for (int i = 0; contacts[i]; i++)
-				contacts[i].printthis();
+			for (int i = 0; contacts[i].index; i++)
+				contacts[i].print_index();
+		}
+
+		Contact	add_contact()
+		{
+			int	index = 0;
+			while (contacts[index].index)
+				index++;
+			try
+			{
+				index++;
+				contacts[index].index = index;
+			}
+			// insert new contact 
+			catch
+			{
+				contacts[0].index = 0;
+			}
+			// erase and replace oldest
+		}
+
+		int	search(int index)
+		{
+			if (!contacts[index].index)
+				return 0;
+			return 1;
 		}
 };
 
-void	add_contact(PhoneBook phoneBook)
-{
-	
-}
-
-void	print_phonebook(PhoneBook phoneBook)
-{
-	int	index;
-	for (int i = 0; contact[i]; i++;)
-		contact.display();
-	atoi(std::cin) >> index;
-
-}
 
 int	main(void)
 {
 	PhoneBook	phoneBook;
 	std::string	cmd;
+	int			index;
 
 	while (1)
 	{
 		std::cin >> cmd;
 		if (cmd.compare("ADD"))
-			add_contact(phoneBook);
+			phoneBook.add_contact();
 		else if (cmd.compare("SEARCH"))
-			print_phonebook();
+		{
+			phoneBook.print_phonebook();
+			atoi(std::cin) >> index;
+			if (phoneBook.search(index))
+				phoneBook.contacts[index].display();
+		}
 		else if (cmd.compare("EXIT"))
 			break ;
 	}
